@@ -1,0 +1,31 @@
+# Python
+venv/
+newenv_py311/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.Python
+build/
+develop-eggs/
+dist/
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Qdrant (in-memory DB)
+.qdrant/
+
+# Logs
+*.log

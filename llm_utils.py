@@ -9,12 +9,9 @@ import json
 # Ollama API endpoint (running on port 11435)
 OLLAMA_API_URL = "http://localhost:11435/api/generate"
 
-print("=" * 50)
 print("LLM UTILS: Ollama Connection")
-print("=" * 50)
 print(f" Ollama endpoint: {OLLAMA_API_URL}")
 print(f" Model: mistral")
-print("=" * 50)
 
 def generate_response(user_query: str, retrieved_docs: list) -> str:
     """
@@ -56,9 +53,9 @@ Answer:"""
     
     try:
         # Step 5: Call Ollama API
-        print(f"\n📝 Query: {user_query}")
-        print(f"🔍 Retrieved {len(retrieved_docs)} documents")
-        print("⏳ Generating response with Mistral...")
+        print(f"\n Query: {user_query}")
+        print(f" Retrieved {len(retrieved_docs)} documents")
+        print(" Generating response with Mistral...")
         
         response = requests.post(
             OLLAMA_API_URL,
@@ -66,7 +63,7 @@ Answer:"""
                 "model": "mistral",
                 "prompt": full_prompt,
                 "stream": False,
-                "temperature": 0.7,  # Balance between creativity and accuracy
+                "temperature": 0.7, 
             },
             timeout=120  # 2 minute timeout for LLM generation
         )
@@ -78,7 +75,7 @@ Answer:"""
             
             # Clean up the answer (remove extra whitespace)
             if answer:
-                print(f"✅ Generated response")
+                print(f" Generated response")
                 return answer
             else:
                 return "I couldn't generate an answer for this question."
@@ -86,18 +83,16 @@ Answer:"""
             return f"Error from Ollama: {response.status_code}"
     
     except requests.exceptions.ConnectionError:
-        return "❌ Error: Ollama server not running. Run: ollama serve"
+        return "Error: Ollama server not running. Run: ollama serve"
     except requests.exceptions.Timeout:
-        return "❌ Error: Ollama took too long to respond. Try again."
+        return "Error: Ollama took too long to respond. Try again."
     except Exception as e:
-        return f"❌ Error: {str(e)}"
+        return f"Error: {str(e)}"
 
 # Test function
 def test_llm():
     """Test LLM connection"""
-    print("\n" + "=" * 50)
     print("TESTING LLM CONNECTION")
-    print("=" * 50)
     
     # Create dummy documents (for testing)
     test_docs = [
@@ -116,8 +111,7 @@ def test_llm():
     # Generate response
     answer = generate_response(test_query, test_docs)
     
-    print(f"\n📤 Answer:\n{answer}")
-    print("\n" + "=" * 50)
+    print(f"\n Answer:\n{answer}")
 
 if __name__ == "__main__":
     test_llm()

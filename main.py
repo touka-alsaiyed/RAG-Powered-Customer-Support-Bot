@@ -8,9 +8,7 @@ from pydantic import BaseModel
 from rag_system import retrieve_relevant_docs, client as qdrant_client
 from llm_utils import generate_response
 
-print("=" * 60)
 print("INITIALIZING FASTAPI SERVER")
-print("=" * 60)
 
 app = FastAPI(
     title="Customer Support RAG Bot",
@@ -39,10 +37,6 @@ class QueryResponse(BaseModel):
 
 print(" Request/Response models defined")
 
-# ============================================================
-# HEALTH CHECK ENDPOINT
-# ============================================================
-
 @app.get("/")
 def health_check():
     """Health check endpoint - verify server is running"""
@@ -56,9 +50,6 @@ def health_check():
         }
     }
 
-# ============================================================
-# MAIN RAG ENDPOINT
-# ============================================================
 
 @app.post("/ask", response_model=QueryResponse)
 async def ask_question(request: QueryRequest):
@@ -67,7 +58,7 @@ async def ask_question(request: QueryRequest):
     
     Args:
         question: Customer's question
-        language: Language (english, arabic, etc) - for future use
+        language: Language (english, arabic)
         top_k: Number of documents to retrieve (default: 3)
     
     Returns:
@@ -95,10 +86,10 @@ async def ask_question(request: QueryRequest):
                 detail="Question is too long (max 500 characters)"
             )
         
-        print(f"\n📝 New Query: {request.question}")
+        print(f"\n New Query: {request.question}")
         
         # Step 1: Retrieve relevant documents
-        print(f"🔍 Retrieving top {request.top_k} documents...")
+        print(f" Retrieving top {request.top_k} documents...")
         retrieved_docs = retrieve_relevant_docs(
             query=request.question,
             top_k=request.top_k
@@ -115,7 +106,7 @@ async def ask_question(request: QueryRequest):
             print(f"  - {doc['title']} (Score: {doc['similarity_score']})")
         
         # Step 2: Generate answer using LLM
-        print("🤖 Generating answer with Mistral...")
+        print(" Generating answer with Mistral...")
         answer = generate_response(request.question, retrieved_docs)
         print(" Answer generated")
         
@@ -139,15 +130,12 @@ async def ask_question(request: QueryRequest):
     except HTTPException:
         raise
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f" Error: {str(e)}")
         raise HTTPException(
             status_code=500,
             detail=f"Internal server error: {str(e)}"
         )
 
-# ============================================================
-# DOCUMENTS ENDPOINT
-# ============================================================
 
 @app.get("/documents")
 def list_documents():
@@ -167,9 +155,7 @@ def list_documents():
             detail=f"Error retrieving documents: {str(e)}"
         )
 
-# ============================================================
-# SEARCH ENDPOINT (Debug)
-# ============================================================
+
 
 @app.get("/search/{query}")
 def search_documents(query: str, top_k: int = 3):
@@ -211,29 +197,21 @@ def search_documents(query: str, top_k: int = 3):
             detail=f"Search error: {str(e)}"
         )
 
-# ============================================================
-# STARTUP MESSAGE
-# ============================================================
 
 @app.on_event("startup")
 async def startup_event():
     """Print startup message"""
-    print("\n" + "=" * 60)
-    print("🚀 CUSTOMER SUPPORT RAG BOT STARTED")
-    print("=" * 60)
+    print(" CUSTOMER SUPPORT RAG BOT STARTED")
     print(" RAG System: Ready")
     print(" Ollama (Mistral): Ready")
     print(" Vector Database (Qdrant): Ready")
-    print("\n📍 API Documentation: http://localhost:8000/docs")
-    print("📊 Alternative docs: http://localhost:8000/redoc")
-    print("=" * 60 + "\n")
+    print("\n API Documentation: http://localhost:8000/docs")
+    print(" Alternative docs: http://localhost:8000/redoc")
 
 if __name__ == "__main__":
     import uvicorn
     
-    print("=" * 60)
     print("Starting FastAPI Server...")
-    print("=" * 60)
     
     uvicorn.run(
         app,

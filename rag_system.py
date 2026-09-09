@@ -9,7 +9,6 @@ from docs import DOCUMENTS
 
 print("STEP 1: Loading Embedding Model")
 
-
 # Load embedding model (runs locally)
 embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
 print(" Embedding model loaded")
@@ -18,7 +17,6 @@ print(f"  Embedding dimension: {embedding_model.get_embedding_dimension()}")
 
 
 print("STEP 2: Initialize Qdrant Vector Database")
-
 
 # Create Qdrant client (in-memory for testing)
 client = QdrantClient(":memory:")

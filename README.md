@@ -12,7 +12,7 @@ Production-grade Retrieval-Augmented Generation system that answers customer que
 
 - **LLM**: Mistral 7B (Ollama)
 - **Vector DB**: Qdrant
-- **Embeddings**: Sentence Transformers
+- **Embeddings**: all-MiniLM-L6-v2
 - **API**: FastAPI
 - **Language**: Python
 

@@ -47,14 +47,6 @@ curl -X POST "http://localhost:8000/ask" \
 - `GET /search/{query}` — Search documents
 - `GET /docs` — Interactive API documentation (Swagger UI)
 
-## Features
-
-✅ Semantic search with Qdrant vector DB  
-✅ Local LLM (no API costs)  
-✅ Source attribution  
-✅ Production error handling  
-✅ Input validation  
-✅ Interactive documentation  
 
 ## Project Structure
 
@@ -65,6 +57,3 @@ curl -X POST "http://localhost:8000/ask" \
 ├── docs.py    # Sample customer service docs
 
 
----
-
-**Portfolio project demonstrating: vector databases, LLM orchestration, RAG systems, and production-grade API design.**
